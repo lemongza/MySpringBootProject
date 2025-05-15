@@ -2,6 +2,8 @@ package com.basic.myspringboot.runner;
 
 import com.basic.myspringboot.config.CustomerVO;
 import com.basic.myspringboot.property.MyBootProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -27,16 +29,22 @@ public class MyRunner implements ApplicationRunner {
     @Autowired
     private CustomerVO customerVO;
 
+    private Logger logger = LoggerFactory.getLogger(MyRunner.class);
+
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        System.out.println("Logger 구현체 => " + logger.getClass().getName());
 
-        System.out.println("${myboot.name} = " + name);
-        System.out.println("${myboot.age} = " + age);
-        System.out.println("${myboot.fullName} = " + environment.getProperty("myboot.fullName"));
-        System.out.println("MyBootProperties.getName() = " + properties.getName());
-        System.out.println("MyBootProperties.getAge() = " + properties.getAge());
-        System.out.println("MyBootProperties.getFullName() = " + properties.getFullName());
-        System.out.println("설정된 Port 번호 "+ environment.getProperty("local.server.port"));
+        logger.debug("${myboot.name} = {} ", name);
+        logger.debug("${myboot.age} = {} ", age);
+        logger.debug("${myboot.fullName} = {}", environment.getProperty("myboot.fullName"));
+
+
+        logger.info("MyBootProperties.getName() = {} ", properties.getName());
+        logger.info("MyBootProperties.getAge() = {}", properties.getAge());
+        logger.info("MyBootProperties.getFullName() = {}", properties.getFullName());
+        logger.info("설정된 Port 번호 {}", environment.getProperty("local.server.port"));
 
         System.out.println("현재 활성화된 CustomerVO Bean "+ customerVO);
 
