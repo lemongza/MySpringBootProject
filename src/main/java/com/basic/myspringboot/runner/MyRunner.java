@@ -1,5 +1,7 @@
 package com.basic.myspringboot.runner;
 
+import com.basic.myspringboot.config.CustomerVO;
+import com.basic.myspringboot.property.MyBootProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -19,12 +21,25 @@ public class MyRunner implements ApplicationRunner {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private MyBootProperties properties;
+
+    @Autowired
+    private CustomerVO customerVO;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         System.out.println("${myboot.name} = " + name);
         System.out.println("${myboot.age} = " + age);
         System.out.println("${myboot.fullName} = " + environment.getProperty("myboot.fullName"));
+        System.out.println("MyBootProperties.getName() = " + properties.getName());
+        System.out.println("MyBootProperties.getAge() = " + properties.getAge());
+        System.out.println("MyBootProperties.getFullName() = " + properties.getFullName());
+        System.out.println("설정된 Port 번호 "+ environment.getProperty("local.server.port"));
+
+        System.out.println("현재 활성화된 CustomerVO Bean "+ customerVO);
+
 
         System.out.println("VM argument-foo : " + args.containsOption("foo"));
         System.out.println("Program argument-bar : " + args.containsOption("bar"));
