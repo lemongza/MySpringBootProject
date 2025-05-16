@@ -21,6 +21,14 @@ class CustomerRepositoryTest {
 
     @Test
     @Rollback(value = false)
+    void testDeleteCustomer() {
+        Customer customer = customerRepository.findById(10L) //없으면 에러
+                .orElseThrow(()-> new RuntimeException("Customer Not Found"));
+        customerRepository.delete(customer);
+    }
+
+    @Test
+    @Rollback(value = false)
     void testUpdateCustomer() {
         Customer customer = customerRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Customer Not Found"));
@@ -41,7 +49,7 @@ class CustomerRepositoryTest {
     @Test
     @Disabled
     void testFindBy(){
-        Optional<Customer> optionalCustomer = customerRepository.findById(1L);
+        Optional<Customer>  optionalCustomer = customerRepository.findById(1L);
         if (optionalCustomer.isPresent()){
             Customer customer = optionalCustomer.get();
             assertThat(customer.getId()).isEqualTo(1L);
