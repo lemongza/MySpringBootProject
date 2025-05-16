@@ -1,8 +1,10 @@
 package com.basic.myspringboot.controller;
 
 import com.basic.myspringboot.entity.User;
+import com.basic.myspringboot.exception.BusinessException;
 import com.basic.myspringboot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,18 +29,19 @@ public class UserRestController {
         return userRepository.save(user);
     }
 
+    //목록조회
     @GetMapping
     public List<User> getUsers() {
         return userRepository.findAll();
     }
-
+    //id로 조회
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
 
         ResponseEntity<User> responseEntity = optionalUser
                 .map(user -> ResponseEntity.ok(user))
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(new ResponseEntity("User Not Found", HttpStatus.NOT_FOUND));
 
         return responseEntity;
 
@@ -47,6 +50,17 @@ public class UserRestController {
 
     }
 
+    //email로 조회
+    @GetMapping("/email/{email}/")
+    public User getUserByEmail(@PathVariable String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User existUser =
+                optionalUser.orElseThrow(()-> new BusinessException("User Not Found", HttpStatus.NOT_FOUND));
+        return existUser;
+    }
+
+
+    //수정
 
 
 
