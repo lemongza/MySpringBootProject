@@ -33,6 +33,7 @@ public enum ErrorCode {
     private final HttpStatus httpStatus;
 
     public String formatMessage(Object... args) {
+
         return String.format(messageTemplate, args);
     }
 }
